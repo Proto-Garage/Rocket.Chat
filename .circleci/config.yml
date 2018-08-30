@@ -93,8 +93,8 @@ jobs:
             rm Rocket.Chat.tar.gz
 
             cp ~/project/.docker/Dockerfile .
-            docker build -t 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener_rocketchat:$CIRCLE_BUILD_NUM .
-            docker push 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener_rocketchat:$CIRCLE_BUILD_NUM
+            docker build -t 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener-rocketchat:$CIRCLE_BUILD_NUM .
+            docker push 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener-rocketchat:$CIRCLE_BUILD_NUM
 
 workflows:
   version: 2
