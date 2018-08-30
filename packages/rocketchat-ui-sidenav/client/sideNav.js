@@ -16,15 +16,35 @@ Template.sideNav.helpers({
 	},
 
 	roomType() {
-		return RocketChat.roomTypes.getTypes().map((roomType) => ({
-			template: roomType.customTemplate || 'roomList',
-			data: {
-				header: roomType.header,
-				identifier: roomType.identifier,
-				isCombined: roomType.isCombined,
-				label: roomType.label,
+		// return RocketChat.roomTypes.getTypes().map((roomType) => ({
+		// 	template: roomType.customTemplate || 'roomList',
+		// 	data: {
+		// 		header: roomType.header,
+		// 		identifier: roomType.identifier,
+		// 		isCombined: roomType.isCombined,
+		// 		label: roomType.label,
+		// 	},
+		// }));
+		return [
+			{
+				template: 'roomList',
+				data: {
+					header: undefined,
+					identifier: 'c',
+					isCombined: undefined,
+					label: 'Channels',
+				},
 			},
-		}));
+			{
+				template: 'roomList',
+				data: {
+					header: undefined,
+					identifier: 'd',
+					isCombined: undefined,
+					label: 'Direct_Messages',
+				},
+			},
+		];
 	},
 
 	loggedInUser() {
