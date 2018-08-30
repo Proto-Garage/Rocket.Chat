@@ -61,15 +61,27 @@ jobs:
 
   build_image:
     docker:
-      - image: 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/circleci:5
-        aws_auth:
-          AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-          AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+      - image: circleci/node:8.9-stretch
     steps:
       - attach_workspace:
           at: /tmp
       - checkout
       - setup_remote_docker
+      - run:
+          name: Install AWS CLI
+          command: >
+            sudo apt-get update &&
+            sudo apt-get install -y python-dev &&
+            sudo wget https://bootstrap.pypa.io/get-pip.py &&
+            sudo python get-pip.py &&
+            sudo pip install awscli
+      - run:
+          name: Setup AWS CLI
+          command: >
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID &&
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY &&
+            aws configure set default.region ap-southeast-1 &&
+            aws configure set default.output json
       - run:
           name: Build Docker image
           command: |
@@ -77,7 +89,8 @@ jobs:
             tar xzf Rocket.Chat.tar.gz
             rm Rocket.Chat.tar.gz
 
-            echo "Build official Docker image"
+            eval `aws ecr get-login --no-include-email --region ap-southeast-1`
+
             cp ~/repo/.docker/Dockerfile .
             docker build -t 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener_rocketchat:$CIRCLE_BUILD_NUM .
             docker push 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener_rocketchat:$CIRCLE_BUILD_NUM
