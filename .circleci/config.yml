@@ -83,15 +83,16 @@ jobs:
             aws configure set default.region ap-southeast-1 &&
             aws configure set default.output json
       - run:
+          name: Log In to Docker Registry
+          command: eval `aws ecr get-login --no-include-email --region ap-southeast-1`
+      - run:
           name: Build Docker image
           command: |
             cd /tmp/build
             tar xzf Rocket.Chat.tar.gz
             rm Rocket.Chat.tar.gz
 
-            eval `aws ecr get-login --no-include-email --region ap-southeast-1`
-
-            cp ~/repo/.docker/Dockerfile .
+            cp ~/project/.docker/Dockerfile .
             docker build -t 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener_rocketchat:$CIRCLE_BUILD_NUM .
             docker push 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/reitscreener_rocketchat:$CIRCLE_BUILD_NUM
 
