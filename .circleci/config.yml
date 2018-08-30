@@ -34,8 +34,6 @@ jobs:
       - run:
           name: Meteor npm install
           command: |
-            # rm -rf node_modules
-            # rm -f package-lock.json
             meteor npm install
       - run:
           name: Build Rocket.Chat
@@ -58,7 +56,6 @@ jobs:
           paths:
             - build-test
             - build
-
       - store_artifacts:
           path: /tmp/build
 
@@ -66,9 +63,8 @@ jobs:
     docker:
       - image: 498457837717.dkr.ecr.ap-southeast-1.amazonaws.com/circleci:5
         aws_auth:
-          AWS_ACCESS_KEY_ID: AKIAI6TI3WEWQPJTHPZA
-          AWS_SECRET_ACCESS_KEY: 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
-
+          AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+          AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
     steps:
       - attach_workspace:
           at: /tmp
